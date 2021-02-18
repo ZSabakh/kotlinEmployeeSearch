@@ -1,5 +1,7 @@
 package com.example.dbsearcher.api
 
+import java.io.Serializable
+
 data class PersonJson(
     val birth_date: String,
     val citizenship_code: String,
@@ -12,4 +14,4 @@ data class PersonJson(
     val person_status: Int,
     val private_number: String,
     val region: String
-)
+) : Serializable
