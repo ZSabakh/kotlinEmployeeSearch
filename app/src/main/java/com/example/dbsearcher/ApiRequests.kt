@@ -6,12 +6,12 @@ import retrofit2.http.*
 
 
 interface ApiRequests {
-    @Headers("Authorization: ")
+    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmVmZTQ3NTM2Yjc1NDM1ZjA1NTI0ODgiLCJpYXQiOjE2MDk1NTcxMzB9.WOI1eYCSRjIjLf-qRLNR9JVa1RnfIZsxf-YzesLhLEg")
     @GET("/get_employees")
     fun getEmployeesPages(): Call<ArrayList<PersonJson>>
 
     @FormUrlEncoded
-    @Headers("Authorization: ")
+    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmVmZTQ3NTM2Yjc1NDM1ZjA1NTI0ODgiLCJpYXQiOjE2MDk1NTcxMzB9.WOI1eYCSRjIjLf-qRLNR9JVa1RnfIZsxf-YzesLhLEg")
     @POST("/find_employee")
     fun findEmployee(
     @Field("fname") fname: String?,

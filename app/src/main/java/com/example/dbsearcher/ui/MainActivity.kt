@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import com.example.dbsearcher.ApiRequests
 import com.example.dbsearcher.R
@@ -22,7 +23,6 @@ const val BASE_URL = "http://167.99.7.161:4000"
 
 class MainActivity : AppCompatActivity() {
 
-    private var TAG = "MainActivity"
     var personData: ArrayList<PersonJson>? = null
 
 
@@ -31,11 +31,10 @@ class MainActivity : AppCompatActivity() {
         val view = ActivityMainBinding.inflate(layoutInflater).root
         setContentView(view)
         ActivityMainBinding.bind(view).onViewBind()
-
-        getData()
+        getData("ნიკა", "მგალობლიშვილი")
     }
 
-    private fun getData() {
+    private fun getData(fname:String, lname:String) {
         val api = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -43,28 +42,21 @@ class MainActivity : AppCompatActivity() {
             .create(ApiRequests::class.java)
 
         GlobalScope.launch(Dispatchers.IO) {
-            val getAllResults = api.getEmployeesPages().awaitResponse()
-            val findResults = api.findEmployee("ნიკა", "მგალობლიშვილი").awaitResponse()
+            val findResults = api.findEmployee(fname, lname).awaitResponse()
             personData = findResults.body()!!
 
-
-            if (getAllResults.isSuccessful) {
-                val data = getAllResults.body()!!
-                Log.d(TAG, data[0].private_number)
-                withContext(Dispatchers.Main) {
-                    val tvRetroTest = findViewById<TextView>(R.id.tvRetroTest)
-                    tvRetroTest.text = data[0].first_name
-                }
-            }
         }
     }
 
+
+
     private fun ActivityMainBinding.onViewBind() {
         btnSearch.setOnClickListener {
+
             val intent = Intent(applicationContext, ResultsActivity::class.java)
             intent.putExtra(NAME, etName.text.toString())
-            intent.putExtra(PERSONDATA, personData)
             intent.putExtra(LASTNAME, etLname.text.toString())
+            intent.putExtra(PERSONDATA, personData)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
