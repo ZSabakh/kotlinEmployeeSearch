@@ -3,6 +3,7 @@ package com.example.dbsearcher.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.dbsearcher.ApiRequests
 import com.example.dbsearcher.api.PersonJson
 import com.example.dbsearcher.databinding.ActivityMainBinding
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         val view = ActivityMainBinding.inflate(layoutInflater).root
         setContentView(view)
         ActivityMainBinding.bind(view).onViewBind()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
 

@@ -50,7 +50,8 @@ class ResultsActivity : AppCompatActivity() {
                 "${results?.get(i)?.first_name}  ${results?.get(i)?.last_name}",
                 "${results?.get(i)?.private_number}",
                 "2003",
-                decodedImage
+                decodedImage,
+                "${results?.get(i)?.living_place}"
             )
             recyclerList += recyclerItem
         }

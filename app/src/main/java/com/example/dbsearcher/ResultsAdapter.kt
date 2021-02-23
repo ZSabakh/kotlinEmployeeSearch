@@ -16,12 +16,14 @@ class ResultsAdapter(private val resultList: List<ResultsItem>) :
         val tvResultName: TextView
         val tvResultPrivateNumber: TextView
         val tvResultDOB: TextView
+        val tvResultAddress: TextView
         val ivPerson: ImageView
 
         init {
             tvResultName = itemView.findViewById(R.id.tvResultName)
             tvResultPrivateNumber = itemView.findViewById(R.id.tvResultPrivateNumber)
             tvResultDOB = itemView.findViewById(R.id.tvResultDOB)
+            tvResultAddress = itemView.findViewById(R.id.tvResultAddress)
             ivPerson = itemView.findViewById(R.id.ivPerson)
         }
     }
@@ -41,6 +43,7 @@ class ResultsAdapter(private val resultList: List<ResultsItem>) :
         holder.tvResultName.text = currentItem.name
         holder.tvResultPrivateNumber.text = currentItem.privateNumber
         holder.tvResultDOB.text = currentItem.dateOfBirth
+        holder.tvResultAddress.text = currentItem.address
         holder.ivPerson.setImageBitmap(currentItem.imageCode)
     }
 
