@@ -12,6 +12,8 @@ import com.example.dbsearcher.ResultsAdapter
 import com.example.dbsearcher.ResultsItem
 import com.example.dbsearcher.api.PersonJson
 import com.example.dbsearcher.databinding.ActivityResultsBinding
+import java.sql.Date
+import java.sql.Timestamp
 import kotlin.collections.ArrayList
 
 class ResultsActivity : AppCompatActivity() {
@@ -44,12 +46,17 @@ class ResultsActivity : AppCompatActivity() {
                 var doubleDecodedIMG = decode(results?.get(i)?.image_code, DEFAULT)
                 imageBytes = decode(doubleDecodedIMG, DEFAULT)
             }
+
+            val stamp = results?.get(i)?.birth_date?.toLong()?.let { Timestamp(it) }
+            val date = stamp?.getTime()?.let { Date(it) }
+
+
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
             val recyclerItem = ResultsItem(
                 "${results?.get(i)?.first_name}  ${results?.get(i)?.last_name}",
                 "${results?.get(i)?.private_number}",
-                "2003",
+                date.toString(),
                 decodedImage,
                 "${results?.get(i)?.living_place}"
             )
