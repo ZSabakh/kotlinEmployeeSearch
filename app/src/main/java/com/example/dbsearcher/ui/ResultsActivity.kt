@@ -1,5 +1,6 @@
 package com.example.dbsearcher.ui
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64.DEFAULT
@@ -13,6 +14,7 @@ import com.example.dbsearcher.ResultsAdapter
 import com.example.dbsearcher.ResultsItem
 import com.example.dbsearcher.api.PersonJson
 import com.example.dbsearcher.databinding.ActivityResultsBinding
+import com.example.dbsearcher.utility.imageDecoder
 import java.sql.Date
 import java.sql.Timestamp
 import kotlin.collections.ArrayList
@@ -20,6 +22,7 @@ import kotlin.collections.ArrayList
 class ResultsActivity : AppCompatActivity(), ResultsAdapter.OnItemClickListener {
 
     private val recyclerList = ArrayList<ResultsItem>()
+    private var personData = ArrayList<PersonJson>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,36 +30,26 @@ class ResultsActivity : AppCompatActivity(), ResultsAdapter.OnItemClickListener 
         setContentView(view)
 
         val intent = intent
-        val personData =
-            intent.getSerializableExtra(MainActivity.PERSONDATA) as ArrayList<PersonJson>
+        personData = intent.getSerializableExtra(MainActivity.PERSONDATA) as ArrayList<PersonJson>
 
         populateRecyclerList(personData, personData.size)
-
 
         val resultsRecycler: RecyclerView = findViewById(R.id.recyclerView)
         resultsRecycler.adapter = ResultsAdapter(recyclerList, this)
         resultsRecycler.layoutManager = LinearLayoutManager(this)
     }
 
-    override fun onItemClick() {
-        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+    override fun onItemClick(pos: Int) {
+        val intent = Intent(applicationContext, DetailActivity::class.java)
+        intent.putExtra(DETAILDATA, personData[pos])
+        startActivity(intent)
     }
 
     private fun populateRecyclerList(results: ArrayList<PersonJson>?, resultSize: Int?) {
-        for (i in 0 until resultSize!!/2) {
-            var imageBytes: ByteArray
-            if (results?.get(i)?.image_code?.get(0) == '/') {
-                imageBytes = decode(results?.get(i)?.image_code, DEFAULT)
-            } else {
-                var doubleDecodedIMG = decode(results?.get(i)?.image_code, DEFAULT)
-                imageBytes = decode(doubleDecodedIMG, DEFAULT)
-            }
-
+        for (i in 0 until resultSize!! / 2) {
+            val decodedImage = imageDecoder(results?.get(i)?.image_code)
             val stamp = results?.get(i)?.birth_date?.toLong()?.let { Timestamp(it) }
             val date = stamp?.getTime()?.let { Date(it) }
-
-
-            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
             val recyclerItem = ResultsItem(
                 "${results?.get(i)?.first_name}  ${results?.get(i)?.last_name}",
@@ -67,6 +60,10 @@ class ResultsActivity : AppCompatActivity(), ResultsAdapter.OnItemClickListener 
             )
             recyclerList += recyclerItem
         }
+    }
+
+    companion object {
+        const val DETAILDATA = "detaildata"
     }
 
 }

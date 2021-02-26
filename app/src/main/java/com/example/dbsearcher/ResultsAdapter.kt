@@ -35,7 +35,10 @@ class ResultsAdapter(
         }
 
         override fun onClick(v: View?) {
-            listener.onItemClick()
+            val position = adapterPosition
+            if (position >= 0) {
+                listener.onItemClick(position)
+            }
         }
     }
 
@@ -61,6 +64,6 @@ class ResultsAdapter(
     override fun getItemCount() = resultList.size
 
     interface OnItemClickListener {
-        fun onItemClick()
+        fun onItemClick(pos: Int)
     }
 }
