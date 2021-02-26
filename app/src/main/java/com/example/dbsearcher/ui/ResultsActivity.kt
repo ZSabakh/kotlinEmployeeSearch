@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64.DEFAULT
 import android.util.Base64.decode
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import java.sql.Date
 import java.sql.Timestamp
 import kotlin.collections.ArrayList
 
-class ResultsActivity : AppCompatActivity() {
+class ResultsActivity : AppCompatActivity(), ResultsAdapter.OnItemClickListener {
 
     private val recyclerList = ArrayList<ResultsItem>()
 
@@ -33,8 +34,12 @@ class ResultsActivity : AppCompatActivity() {
 
 
         val resultsRecycler: RecyclerView = findViewById(R.id.recyclerView)
-        resultsRecycler.adapter = ResultsAdapter(recyclerList)
+        resultsRecycler.adapter = ResultsAdapter(recyclerList, this)
         resultsRecycler.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onItemClick() {
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
     }
 
     private fun populateRecyclerList(results: ArrayList<PersonJson>?, resultSize: Int?) {
